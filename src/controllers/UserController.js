@@ -5,7 +5,7 @@ const { User } = require('../models/UserModel');
 // make an instance of a Router
 const router = express.Router(); 
 
-// GET localhost:3000/users/laijhjsdaljfdhbsal
+// GET localhost:3000/users/id
 router.get("/:id", async (request, response) => {
 	let result = await User.findOne({_id: request.params.id});
 
