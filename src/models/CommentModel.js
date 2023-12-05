@@ -6,13 +6,13 @@ const CommentSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'User',
 		required: true,  
-        unqiue: false
+        unique: false
 	}, 
     artwork: {
 		type: ObjectId,
 		ref: 'Artwork',
 		required: true,  
-        unqiue: false
+        unique: false
 	}, 
 	comment: {
 		type: String,

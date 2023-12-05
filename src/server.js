@@ -14,9 +14,11 @@ app.use(cors(corsOptions));
 
 app.get("/", (request, response) => {
 	response.json({
-		message:"Hello world"
+		message:"Hello Artist Connect"
 	});
 }); 
+
+
 
 const userController = require('./controllers/UserController');
 app.use("/users", userController);

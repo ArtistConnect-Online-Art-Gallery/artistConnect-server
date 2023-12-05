@@ -6,7 +6,7 @@ const ArtworkSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'User',
 		required: true,  
-        unqiue: false
+        unique: false
 	}, 
     uploadedPhoto: {
         type: String, // URL of uploaded photo

@@ -2,6 +2,7 @@
 const express = require('express');
 const { User } = require('../models/UserModel');
 
+
 // make an instance of a Router
 const router = express.Router(); 
 
@@ -20,4 +21,4 @@ router.post("/", async (request, response) => {
 	response.json(newUser);
 }); 
 
-
+module.exports = router ;
