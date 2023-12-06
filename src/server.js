@@ -12,7 +12,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-router.get('/', (request, response) => {
+app.get('/', (request, response) => {
 	response.json({
 		message: 'Hello Artist Connect',
 	});
