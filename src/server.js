@@ -1,26 +1,26 @@
 const express = require('express');
-const cors = require('cors'); 
+const cors = require('cors');
 
-// make a server instance 
-const app = express();  
+// make a server instance
+const app = express();
 
 const corsOptions = {
 	//			frontend localhost,  frontend deployed
-	origin: ["http://localhost:3000/","http://localhost:3000", "https://someDeployedWebsite.com"],
-	optionsSuccessStatus: 200
-} 
+	origin: ['http://localhost:3000/', 'http://localhost:3000', 'https://someDeployedWebsite.com'],
+	optionsSuccessStatus: 200,
+};
 
 app.use(cors(corsOptions));
 
-app.get("/", (request, response) => {
+router.get('/', (request, response) => {
 	response.json({
-		message:"Hello world"
+		message: 'Hello world',
 	});
-}); 
+});
 
 const userController = require('./controllers/UserController');
-app.use("/users", userController);
+app.use('/users', userController);
 
 module.exports = {
-	app
-}
+	app,
+};
