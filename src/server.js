@@ -14,7 +14,7 @@ app.use(cors(corsOptions));
 
 router.get('/', (request, response) => {
 	response.json({
-		message: 'Hello world',
+		message: 'Hello Artist Connect',
 	});
 });
 
