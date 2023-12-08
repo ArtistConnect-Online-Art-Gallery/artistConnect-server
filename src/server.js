@@ -20,8 +20,12 @@ app.get("/", (request, response) => {
 
 
 
-const userController = require('./controllers/UserController');
-app.use("/users", userController);
+const UserRouter = require('./controllers/UserController');
+app.use("/users", UserRouter);
+const ArtworkRouter= require('./controllers/ArtworkController');
+app.use("/artworks", ArtworkRouter); 
+const CommentRouter = require('./controllers/CommentController');
+app.use("/comments", CommentRouter); 
 
 module.exports = {
 	app

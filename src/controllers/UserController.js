@@ -1,6 +1,6 @@
 // import Express library
 const express = require('express');
-const { User } = require('../models/UserModel');
+const { User } = require('../models/UserModel'); 
 
 
 // make an instance of a Router
@@ -24,9 +24,11 @@ router.get("/:id", async (request, response) => {
 
 // POST localhost:3000/users/
 router.post("/", async (request, response) => {
-	let newUser = await User.create(request.body).catch(error => error);
+	let result = await User.create(request.body).catch(error => {return error});
 
-	response.json(newUser);
+	response.json({
+		user: result
+	});
 }); 
 
 module.exports = router ; 

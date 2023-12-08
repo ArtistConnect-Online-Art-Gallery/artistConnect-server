@@ -1,6 +1,6 @@
 // import Express library
 const express = require('express');
-const { Artwork } = require('../models/ArtworkModel');
+const { Comment } = require('../models/CommentModel');
 
 
 // make an instance of a Router
@@ -8,7 +8,7 @@ const router = express.Router();
 
 // GET localhost:3000/artworks/
 router.get("/", async (request, response) => {
-	let result = await Artwork.find({});
+	let result = await Comment.find({});
 
 	response.json({result});
 })
@@ -16,7 +16,7 @@ router.get("/", async (request, response) => {
 
 // GET localhost:3000/artworks/id
 router.get("/:id", async (request, response) => {
-	let result = await Artwork.findOne({_id: request.params.id});
+	let result = await Comment.findOne({_id: request.params.id});
 
 	response.json({result});
 })
@@ -24,9 +24,9 @@ router.get("/:id", async (request, response) => {
 
 // POST localhost:3000/artworks/
 router.post("/", async (request, response) => {
-	let newArtwork = await Artwork.create(request.body).catch(error => error);
+	let newComment = await Comment.create(request.body).catch(error => error);
 
-	response.json(newArtwork);
+	response.json(newComment);
 }); 
 
 module.exports = router ; 
