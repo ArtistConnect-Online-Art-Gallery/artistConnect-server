@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const ArtworkSchema = new mongoose.Schema({
 	user: {
 		type: mongoose.Types.ObjectId,
@@ -39,5 +38,5 @@ const ArtworkSchema = new mongoose.Schema({
 }); 
 
 const Artwork = mongoose.model('Artwork', ArtworkSchema);
-
 module.exports = { Artwork }
+
