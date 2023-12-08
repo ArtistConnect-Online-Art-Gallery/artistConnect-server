@@ -11,10 +11,10 @@ databaseConnect()
 		console.log('Creating seed data!');
 
 	let newUser = new User({
-		username: "user4",
-		email: "user4@email.com",
-		password:"user4pw",
-		bio: "This is user4's bio :)",
+		username: "user5",
+		email: "user5@email.com",
+		password:"user5pw",
+		bio: "This is user5's bio :)",
 	})
     await newUser.save().then(() => {
         console.log(`${newUser.username} is in the DB`);

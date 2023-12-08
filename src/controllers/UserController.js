@@ -3,7 +3,6 @@ const express = require('express');
 const { User } = require('../models/UserModel'); 
 
 // make an instance of a Router
-
 const router = express.Router();
 
 // GET localhost:3000/users/

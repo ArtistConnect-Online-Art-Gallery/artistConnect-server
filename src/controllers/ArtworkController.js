@@ -2,7 +2,6 @@
 const express = require('express');
 const { Artwork } = require('../models/ArtworkModel');
 
-
 // make an instance of a Router
 const router = express.Router();  
 
@@ -13,14 +12,12 @@ router.get("/", async (request, response) => {
 	response.json({result});
 })
 
-
 // GET localhost:3000/artworks/id
 router.get("/:id", async (request, response) => {
 	let result = await Artwork.findOne({_id: request.params.id});
 
 	response.json({result});
 })
-
 
 // POST localhost:3000/artworks/
 router.post("/", async (request, response) => {
