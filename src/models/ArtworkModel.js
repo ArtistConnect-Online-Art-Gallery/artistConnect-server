@@ -8,13 +8,13 @@ const ArtworkSchema = new mongoose.Schema({
         unique: false
 	}, 
     uploadedPhoto: {
-        type: String, // URL of uploaded photo
+        type: [String], // URL of uploaded photo
         required: true,   
         unique: false
     }, 
     title: {
         type: String, 
-        required: false, 
+        required: true, 
         unique: false
     },
 	description: {
