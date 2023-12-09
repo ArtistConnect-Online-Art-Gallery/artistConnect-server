@@ -40,14 +40,15 @@ router.post("/", async (request, response) => {
 	response.json(newArtwork);
 }); 
 
-// Patch -> find an artwork by its id and modify that artwork  
+// Find an artwork by its id and modify that artwork  
+// PATCH localhost:3000/artworks/id
 router.patch("/:id", async (request, response) => {
 	let result = await Artwork.findByIdAndUpdate(request.params.id, request.body, { new: true });
 
 	response.json(result);
 }); 
 
-// Delete -> the artwork from the DB 
+// DELETE localhost:3000/artworks/id
 router.delete("/:id", async (request, response) => {
 	let result = await Artwork.findByIdAndDelete(request.params.id);
 
