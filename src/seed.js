@@ -22,7 +22,7 @@ databaseConnect()
 
 	let newArtwork = await Artwork.create({
 		user: newUser._id,
-		uploadedPhoto: "artwork photo URL",  
+		uploadedPhoto: ["http://google.com"],  
         title: "Awesome title",
         description: "artwork description",  
         genre: "impressionism",

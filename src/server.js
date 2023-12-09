@@ -1,8 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 
+
 // make a server instance
 const app = express();
+
+app.use(express.json());
 
 const corsOptions = {
 	//			frontend localhost,  frontend deployed

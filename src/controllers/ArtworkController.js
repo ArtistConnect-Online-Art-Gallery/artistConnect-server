@@ -10,20 +10,49 @@ router.get("/", async (request, response) => {
 	let result = await Artwork.find({});
 
 	response.json({result});
-})
+});
 
 // GET localhost:3000/artworks/id
 router.get("/:id", async (request, response) => {
 	let result = await Artwork.findOne({_id: request.params.id});
 
 	response.json({result});
-})
+});
 
-// POST localhost:3000/artworks/
+// GET localhost:3000/artworks/genre
+router.get("/multiple/genre/:genreToSearchFor", async (request, response) => {
+	let result = await Artwork.find({ genre: request.params.genreToSearchFor});
+
+	response.json({result});
+});
+
+// GET localhost:3000/artworks/medium
+router.get("/multiple/medium/:mediumToSearchFor", async (request, response) => {
+	let result = await Artwork.find({ medium: request.params.mediumToSearchFor});
+
+	response.json({result});
+});
+
+
+// POST localhost:3000/artworks/  
 router.post("/", async (request, response) => {
-	let newArtwork = await Artwork.create(request.body).catch(error => error);
-
+	let newArtwork = await Artwork.create(request.body).catch(error => {return error});
 	response.json(newArtwork);
 }); 
+
+// Patch -> find an artwork by its id and modify that artwork  
+router.patch("/:id", async (request, response) => {
+	let result = await Artwork.findByIdAndUpdate(request.params.id, request.body, { new: true });
+
+	response.json(result);
+}); 
+
+// Delete -> the artwork from the DB 
+router.delete("/:id", async (request, response) => {
+	let result = await Artwork.findByIdAndDelete(request.params.id);
+
+	response.json(result);
+}); 
+
 
 module.exports = router ; 
