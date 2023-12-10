@@ -11,10 +11,10 @@ databaseConnect()
 		console.log('Creating seed data!');
 
 	let newUser = new User({
-		username: "user12",
-		email: "user12@email.com",
-		password:"user12pw",
-		bio: "This is user7's bio :)",
+		username: "user18",
+		email: "user18@email.com",
+		password:"user18pw",
+		bio: "This is user18's bio :)",
 	})
     await newUser.save().then(() => {
         console.log(`${newUser.username} is in the DB`);
@@ -22,7 +22,7 @@ databaseConnect()
 
 	let newArtwork = await Artwork.create({
 		user: newUser._id,
-		username: newUser._id,
+		username: newUser.username,
 		uploadedPhoto: "http://google.com",  
         title: "Awesome title",
         description: "artwork description",  

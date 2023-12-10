@@ -9,8 +9,7 @@ const ArtworkSchema = new mongoose.Schema({
 	}, 
     // Add a reference to the User model to include user's name
     username: {
-        type: mongoose.Types.ObjectId, 
-        ref:'User',
+        type: String, 
         required: true,
     },
     uploadedPhoto: {
