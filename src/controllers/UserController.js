@@ -1,7 +1,7 @@
 // import Express library
 const express = require('express');
 const { User } = require('../models/UserModel');  
-const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
+const { comparePassword, generateJwt, requiresJWT } = require('../functions/userAuthFunctions'); 
 
 
 // make an instance of a Router
@@ -40,7 +40,7 @@ router.post("/login", async (request, response) => {
 	if (!isPasswordCorrect){
 		response.status(403).json({error:"Password was incorrect"}); 
 	} 
-	// If they provided the correct, generate a JWT
+	// If they provided the correct password, generate a JWT
 	let freshJwt = generateJwt(targetUser._id.toString());
 
 	// respond with the JWT 
@@ -51,7 +51,7 @@ router.post("/login", async (request, response) => {
 }); 
 
 // DELETE localhost:3000/users/id
-router.delete("/:id", async (request, response) => {
+router.delete("/:id", requiresJWT, async (request, response) => {  
 	const _id = request.params.id;
   
 	try {
@@ -77,7 +77,7 @@ router.delete("/:id", async (request, response) => {
 
 
 // PATCH localhost:3000/users/id
-router.patch("/:id", async (request, response) => {
+router.patch("/:id", requiresJWT, async (request, response) => {
 	const _id = request.params.id;
     const updatedUserData = request.body; 
 
