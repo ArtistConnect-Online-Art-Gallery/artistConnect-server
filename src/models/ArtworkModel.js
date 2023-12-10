@@ -7,8 +7,14 @@ const ArtworkSchema = new mongoose.Schema({
 		required: true,  
         unique: false
 	}, 
+    // Add a reference to the User model to include user's name
+    username: {
+        type: mongoose.Types.ObjectId, 
+        ref:'User',
+        required: true,
+    },
     uploadedPhoto: {
-        type: [String], // URL of uploaded photo
+        type: String, // URL of uploaded photo
         required: true,   
         unique: false
     }, 
@@ -34,7 +40,12 @@ const ArtworkSchema = new mongoose.Schema({
         required: false, 
         unique: false, 
         trim: true
+    },
+    uploadDate: {
+        type: Date,
+        default: Date.now
     }
+
 }); 
 
 const Artwork = mongoose.model('Artwork', ArtworkSchema);

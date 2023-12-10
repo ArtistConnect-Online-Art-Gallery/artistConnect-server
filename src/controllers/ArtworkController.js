@@ -14,7 +14,9 @@ router.get("/", async (request, response) => {
 
 // GET localhost:3000/artworks/id
 router.get("/:id", async (request, response) => {
-	let result = await Artwork.findOne({_id: request.params.id});
+	let result = await Artwork.findOne({_id: request.params.id})
+	.populate('user')
+	.populate('username');
 
 	response.json({result});
 });
@@ -43,7 +45,7 @@ router.post("/", async (request, response) => {
 // Find an artwork by its id and modify that artwork  
 // PATCH localhost:3000/artworks/id
 router.patch("/:id", async (request, response) => {
-	let result = await Artwork.findByIdAndUpdate(request.params.id, request.body, { new: true });
+	let result = await Artwork.findByIdAndUpdate(request.params.id,request.body, { new: true });
 
 	response.json(result);
 }); 
