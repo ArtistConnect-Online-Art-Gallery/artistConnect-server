@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
 const CommentSchema = new mongoose.Schema({
-	commentingUser: {
-		type: String,
-		required: true,  
-        unique: false
-	}, 
     artwork: {
 		type: mongoose.Types.ObjectId,
 		ref: 'Artwork',
 		required: true,  
         unique: false
+	}, 
+
+	username: {
+		type: String,
+		required: true,  
 	}, 
 	comment: {
 		type: String,

@@ -17,7 +17,9 @@ router.get("/", async (request, response) => {
 // GET localhost:3000/artworks/id
 // Fetch a comment by its ID and populate relate data such us the associated artwork 
 router.get("/:id", async (request, response) => {
-	let result = await Comment.findOne({_id: request.params.id}).populate('artwork');
+	let result = await Comment.findOne({_id: request.params.id})
+	.populate('artwork')
+	.populate('username');
 
 	response.json({result});
 });
