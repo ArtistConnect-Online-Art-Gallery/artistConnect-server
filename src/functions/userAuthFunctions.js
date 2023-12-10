@@ -33,7 +33,33 @@ function generateJwt(userId) {
     return newJwt;
   }
   
+// Middleware function to check for a valid JWT
+const requiresJWT = (request, response, next) => {
+    const authorizationHeader = request.header("Authorization")
+
+    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
+        return response
+        .status(401)
+        .json({ success: false, message: "Invalid authorization header" });
+    }
+    const token = authorizationHeader.replace("Bearer ", "") 
+    if (!token) {
+        return response
+          .status(401)
+          .json({ success: false, message: "Authorization token not found" });
+      } 
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
+        user = decoded;
+        next();
+    } catch (err) {
+        console.error(err);
+        return response.status(401).json({ success: false, message: "Invalid token" });
+      }
+};
+
   module.exports = { 
     comparePassword,
-    generateJwt
+    generateJwt, 
+    requiresJWT
   };
