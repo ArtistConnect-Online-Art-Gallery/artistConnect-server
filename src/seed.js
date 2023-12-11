@@ -11,10 +11,11 @@ databaseConnect()
 		console.log('Creating seed data!');
 
 	let newUser = new User({
-		username: "user18",
-		email: "user18@email.com",
-		password:"user18pw",
-		bio: "This is user18's bio :)",
+		username: "user12",
+		email: "user12@email.com",
+		password:"user12pw",
+		bio: "This is user12's bio :)",
+
 	})
     await newUser.save().then(() => {
         console.log(`${newUser.username} is in the DB`);
@@ -27,17 +28,18 @@ databaseConnect()
         title: "Awesome title",
         description: "artwork description",  
         genre: "impressionism",
-        medium: "painting", 
-        uploadDate: Date()
+        medium: "painting"
     })  
     await newArtwork.save().then(() => {
         console.log(`${newArtwork.title} is in the DB`); 
     });
     
 	let newComment = await Comment.create({
-		commentingUser: "commenting User",
-		artwork: newArtwork._id, 
-        comment: " This is a comment from commenting User  "
+
+		artwork: newArtwork._id,
+		username: newUser,username,
+        comment: " This is a comment  "
+
 	})
     await newComment.save().then(() => {
         console.log(`comment:${newComment.comment} is in the DB`); 

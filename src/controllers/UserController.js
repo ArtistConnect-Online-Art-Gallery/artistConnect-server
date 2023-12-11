@@ -82,11 +82,19 @@ router.delete('/:id', requiresJWT, async (request, response) => {
 // PATCH localhost:3000/users/id
 router.patch('/:id', requiresJWT, async (request, response) => {
 	const _id = request.params.id;
+<<<<<<< HEAD
 	const updatedUserData = request.body;
 
 	try {
 		// Find the user by ID and update their data
 		const updatedUser = await User.findByIdAndUpdate(_id, updatedUserData, { new: true });
+=======
+    const updatedUserData = request.body; 
+	
+    try {
+        // Find the user by ID and update their data
+        const updatedUser = await User.findByIdAndUpdate(_id, updatedUserData, { new: true });
+>>>>>>> refs/remotes/origin/main
 
 		if (!updatedUser) {
 			return response.status(404).json({ error: 'User not found' });

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); 
 
 const ArtworkSchema = new mongoose.Schema({
 	user: {
@@ -9,7 +9,7 @@ const ArtworkSchema = new mongoose.Schema({
 	}, 
     // Add a reference to the User model to include user's name
     username: {
-        type: String, 
+        type: String,
         required: true,
     },
     uploadedPhoto: {
@@ -39,10 +39,6 @@ const ArtworkSchema = new mongoose.Schema({
         required: false, 
         unique: false, 
         trim: true
-    },
-    uploadDate: {
-        type: Date,
-        default: Date.now
     }
 
 }); 
