@@ -39,10 +39,6 @@ const ArtworkSchema = new mongoose.Schema({
         required: false, 
         unique: false, 
         trim: true
-    },
-    uploadDate: {
-        type: Date,
-        default: Date.now
     }
 
 }); 
