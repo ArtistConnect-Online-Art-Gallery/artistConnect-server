@@ -1,25 +1,22 @@
 const mongoose = require('mongoose');
 
 const CommentSchema = new mongoose.Schema({
-    artwork: {
-		type: mongoose.Types.ObjectId,
+	artwork: {
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Artwork',
-		required: true,  
-        unique: false
-	}, 
-
-	username: {
+		required: [true, 'Comment must belong to an artwork'],
+	},
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+		required: [true, 'Comment must belong to a user'],
+	},
+	content: {
 		type: String,
-		required: true,  
-	}, 
-	comment: {
-		type: String,
-		trim: true,  
-        required: true,
-        unique: false
-	}
-}); 
+		required: true,
+	},
+});
 
 const Comment = mongoose.model('Comment', CommentSchema);
 
-module.exports = { Comment }
+module.exports = Comment;

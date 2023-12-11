@@ -1,53 +1,105 @@
-// import Express library
-const express = require('express');
+const asyncHandler = require('express-async-handler');
+const Comment = require('../models/CommentModel');
+const Artwork = require('../models/ArtworkModel');
+const User = require('../models/UserModel');
 
-const { Comment } = require('../models/CommentModel');
-
-// make an instance of a Router
-const router = express.Router();  
-
-// localhost:3000/artworks/:artworkId/comments
-// Fetch all comments associate with a specific artwork 
-router.get("/", async (request, response) => {
-	let comments = await Comment.find({ artworkId: request.params.artworkId});
-
-	response.json({comments});
+// @desc    get all comments
+// @route   GET comments/
+// @access  Public
+const getAllComments = asyncHandler(async (req, res) => {
+	const comments = await Comment.find();
+	res.status(200).json({
+		status: 'success',
+		message: 'All comments',
+		comments,
+	});
 });
 
-// GET localhost:3000/artworks/id
-// Fetch a comment by its ID and populate relate data such us the associated artwork 
-router.get("/:id", async (request, response) => {
-	let result = await Comment.findOne({_id: request.params.id})
-	.populate('artwork')
-	.populate('username');
+// @desc    create new comment
+// @route   POST comments/:artworkID
+// @access  Private
+const createComment = asyncHandler(async (req, res) => {
+	const { content } = req.body;
+	const userId = req.userAuthId;
 
-	response.json({result});
+	// Find the artwork
+	const { artworkID } = req.params;
+
+	const artworkFound = await Artwork.findById(artworkID).populate('comments').populate('user');
+
+	if (!artworkFound) {
+		throw new Error('Artwork Not Found');
+	}
+
+	// Check if the user exists and fetch the user object
+	const user = await User.findById(userId);
+	if (!user) {
+		throw new Error('User not found');
+	}
+
+	// Check if the user already commented on this artwork
+	const hasComment = artworkFound?.comments?.find((comment) => comment?.user?.toString() === userId.toString());
+	if (hasComment) {
+		throw new Error('You have already commented on this artwork');
+	}
+
+	const comment = await Comment.create({
+		user: userId,
+		content,
+		artwork: artworkFound?._id,
+	});
+
+	// Push the comment ID into the artwork's comments array
+	artworkFound.comments.push(comment._id);
+
+	// Push the comment ID into the user's comments array
+	user.comments.push(comment._id);
+
+	// Save changes to both artwork and user
+	await artworkFound.save();
+	await user.save();
+
+	res.status(201).json({
+		status: 'success',
+		message: 'Comment created successfully',
+		comment,
+	});
+});
+//@desc    update comment
+// @route   PATCH comments/:id
+// @access  Private
+const updateComment = asyncHandler(async (req, res) => {
+	const updateComment = await Comment.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: true,
+	});
+
+	if (!updateComment) {
+		throw new Error('Comment not found');
+	}
+
+	res.json({
+		status: 'success',
+		message: 'Comment updated successfully',
+		updateComment,
+	});
 });
 
-
-// POST localhost:3000/artworks/
-router.post("/", async (request, response) => {
-	let newComment = await Comment.create(request.body).catch(error => {return error});
-
-	response.json(newComment);
-}); 
-
-
-// Retrieves the comment by its id and modifies it 
-// PATCH localhost:3000/comments/id  
-router.patch("/:id", async (request, response) => {
-	let updateComment = await Comment.findByIdAndUpdate(request.params.id, request.body, { new: true });
-
-	response.json(updateComment);
+// @desc    delete comment
+// @route   POST comments/:id
+// @access  Private
+const deleteComment = asyncHandler(async (req, res) => {
+	const comment = await Comment.findByIdAndDelete(req.params.id);
+	res.json({
+		status: 'success',
+		message: 'Comment deleted successfully',
+		comment,
+	});
 });
 
-// DELETE localhost:3000/comments/id
-router.delete("/:id", async (request, response) => {
-	let result = await Comment.findByIdAndDelete(request.params.id);
-
-	response.json(result);
-}); 
-
-
-
-module.exports = router ; 
+module.exports = {
+	getAllComments,
+	createComment,
+	updateComment,
+	deleteComment,
+};

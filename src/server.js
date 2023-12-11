@@ -1,9 +1,11 @@
 const express = require('express');
+const app = express();
 const cors = require('cors');
+const userRoutes = require('./routes/userRouter');
+const artworkRoutes = require('./routes/artworkRouter');
+const commentRoutes = require('./routes/commentRouter');
 
 // make a server instance
-const app = express();
-
 app.use(express.json());
 
 const corsOptions = {
@@ -13,11 +15,10 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-//url encoded
+// pass incoming request to express.json()
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-//server static files
-app.use(express.static('public'));
+app.use(express.static(`${__dirname}/public`));
 
 app.get('/', (request, response) => {
 	response.json({
@@ -25,12 +26,10 @@ app.get('/', (request, response) => {
 	});
 });
 
-const UserRouter = require('./controllers/UserController');
-app.use('/users', UserRouter);
-const ArtworkRouter = require('./controllers/ArtworkController');
-app.use('/artworks', ArtworkRouter);
-const CommentRouter = require('./controllers/CommentController');
-app.use('/comments', CommentRouter);
+// routes
+app.use('/users', userRoutes);
+app.use('/artworks', artworkRoutes);
+app.use('/comments', commentRoutes);
 
 module.exports = {
 	app,

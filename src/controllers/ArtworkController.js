@@ -1,61 +1,100 @@
-// import Express library
-const express = require('express');
-const { Artwork } = require('../models/ArtworkModel');
+const asyncHandler = require('express-async-handler');
+const Artwork = require('../models/ArtworkModel');
+const User = require('../models/UserModel');
 
-// make an instance of a Router
-const router = express.Router();  
-
-// GET localhost:3000/artworks/
-router.get("/", async (request, response) => {
-	let result = await Artwork.find({});
-
-	response.json({result});
+// @desc    get all artworks
+// @route   GET artworks/
+// @access  Public
+const getAllArtworks = asyncHandler(async (req, res) => {
+	const artworks = await Artwork.find();
+	res.status(200).json({
+		status: 'success',
+		message: 'All artworks',
+		artworks,
+	});
 });
 
-// GET localhost:3000/artworks/id
-router.get("/:id", async (request, response) => {
-	let result = await Artwork.findOne({_id: request.params.id})
-	.populate('user')
-	.populate('username');
+// @desc    create new artworks
+// @route   POST artworks/uploadArtwork
+// @access  Private
+const uploadArtwork = asyncHandler(async (req, res) => {
+	const { title, description, genre, medium, comments, artworkImg } = req.body;
 
-	response.json({result});
+	// Find the logged-in user
+	const user = await User.findById(req.userAuthId);
+
+	if (!user) {
+		return res.status(404).json({ error: 'Invalid user token' });
+	}
+
+	//artwork name  exists
+	const artworkExist = await Artwork.findOne({ title });
+	if (artworkExist) {
+		throw new Error('Artwork Already Exists');
+	}
+	const artwork = await Artwork.create({
+		title,
+		user: req.userAuthId,
+		artworkImg,
+		description,
+		genre,
+		medium,
+		comments,
+	});
+
+	//push the artwork into user
+	user.artworks?.push(artwork?._id);
+	await user.save();
+	res.status(201).json({
+		status: 'success',
+		message: 'Artwork created successfully',
+		artwork,
+	});
 });
 
-// GET localhost:3000/artworks/genre
-router.get("/multiple/genre/:genreToSearchFor", async (request, response) => {
-	let result = await Artwork.find({ genre: request.params.genreToSearchFor});
-
-	response.json({result});
+// @desc    update artwork
+// @route   PATCH artworks/updateArtwork/:id
+// @access  Private
+const updateArtwork = asyncHandler(async (req, res) => {
+	const { title, description, genre, medium, comments, artworkImg } = req.body;
+	const artwork = await Artwork.findByIdAndUpdate(
+		req.params.id,
+		{
+			title,
+			user: req.userAuthId,
+			artworkImg,
+			description,
+			genre,
+			medium,
+			comments,
+		},
+		{
+			runValidators: true,
+			new: true,
+		}
+	);
+	res.status(201).json({
+		status: 'success',
+		message: 'Artwork updated successfully',
+		artwork,
+	});
 });
 
-// GET localhost:3000/artworks/medium
-router.get("/multiple/medium/:mediumToSearchFor", async (request, response) => {
-	let result = await Artwork.find({ medium: request.params.mediumToSearchFor});
-
-	response.json({result});
+// @desc    delete artwork
+// @route   Delete artworks/:id
+// @access  Private
+const deleteArtwork = asyncHandler(async (req, res) => {
+	artwork = await Artwork.findByIdAndDelete(req.params.id);
+	res.json({
+		status: 'success',
+		message: 'Artwork deleted successfully',
+		artwork,
+	});
 });
 
-
-// POST localhost:3000/artworks/  
-router.post("/", async (request, response) => {
-	let newArtwork = await Artwork.create(request.body).catch(error => {return error});
-	response.json(newArtwork);
-}); 
-
-// Find an artwork by its id and modify that artwork  
-// PATCH localhost:3000/artworks/id
-router.patch("/:id", async (request, response) => {
-	let result = await Artwork.findByIdAndUpdate(request.params.id,request.body, { new: true });
-
-	response.json(result);
-}); 
-
-// DELETE localhost:3000/artworks/id
-router.delete("/:id", async (request, response) => {
-	let result = await Artwork.findByIdAndDelete(request.params.id);
-
-	response.json(result);
-}); 
-
-
-module.exports = router ; 
+module.exports = {
+	getAllArtworks,
+	uploadArtwork,
+	updateArtwork,
+	deleteArtwork,
+};
