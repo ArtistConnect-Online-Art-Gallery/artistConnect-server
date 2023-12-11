@@ -26,7 +26,16 @@ const UserSchema = new mongoose.Schema({
         required: false, 
         unique: false, 
         trim: true
-    }
+    }, 
+	favArtworks: {
+		type: [String], 
+		required: true, 
+		unique: false, 
+	}, 
+	isAdmin: {
+		type: Boolean, 
+		default: false
+	}
 });
 
 

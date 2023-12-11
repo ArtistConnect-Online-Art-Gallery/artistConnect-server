@@ -19,7 +19,8 @@ const ArtworkSchema = new mongoose.Schema({
     }, 
     title: {
         type: String, 
-        required: true, 
+        required: false,  
+        default: "Untitled",
         unique: false
     },
 	description: {
