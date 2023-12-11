@@ -80,7 +80,7 @@ router.delete("/:id", requiresJWT, async (request, response) => {
 router.patch("/:id", requiresJWT, async (request, response) => {
 	const _id = request.params.id;
     const updatedUserData = request.body; 
-
+	
     try {
         // Find the user by ID and update their data
         const updatedUser = await User.findByIdAndUpdate(_id, updatedUserData, { new: true });
