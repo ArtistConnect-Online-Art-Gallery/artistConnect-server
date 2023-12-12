@@ -16,24 +16,23 @@ const ArtworkSchema = new mongoose.Schema({
 	},
 	description: {
 		type: String,
-		trim: true,
 		required: true,
 		unique: false,
 	},
 	genre: {
 		type: String,
 		required: true,
-		enum: ['Painting', 'Sculpture', 'Photography', 'Mixed Media', 'Other'],
+		enum: ['Modern', 'Impressionist', 'Contemporary', 'Surrealist', 'Pop Art', 'Cubist', 'Abstract', 'Graffiti/Street-Art', 'Other' ],
 	},
 
 	medium: {
 		type: String,
 		required: true,
-		enum: ['Oil', 'Acrylic', 'Watercolor', 'Ink', 'Pencil', 'Other'],
+		enum: ['Oil Painting', 'Acrylic Painting', 'Watercolor painting', 'Ink Drawing', 'Pencil Drawing', 'Sculpture', 'Mixed Media', 'Photography', 'Other',]
 	},
 	comments: [
 		{
-			type: mongoose.Types.ObjectId,
+			type: [mongoose.Types.ObjectId],
 			ref: 'Comment',
 			required: false,
 		},

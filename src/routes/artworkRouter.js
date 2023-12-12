@@ -2,7 +2,7 @@ const express = require('express');
 const { uploadArtwork, getAllArtworks, updateArtwork, deleteArtwork } = require('../controllers/ArtworkController');
 
 const checkLoggedIn = require('../middlewares/checkLoggedIn');
-const checkArtworkCreator = require('../middlewares/checkArtworkCreater');
+const checkArtworkCreator = require('../middlewares/checkArtworkCreator');
 const artworkRoutes = express.Router();
 
 artworkRoutes

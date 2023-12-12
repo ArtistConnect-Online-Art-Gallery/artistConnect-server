@@ -49,21 +49,21 @@ const UserSchema = new mongoose.Schema({
 	},
 	favArtworks: [
 		{
-			type: mongoose.Types.ObjectId,
+			type: [mongoose.Types.ObjectId],
 			ref: 'Artwork',
 			required: false,
 		},
 	],
 	reportedArtworks: [
 		{
-			type: mongoose.Types.ObjectId,
+			type: [mongoose.Types.ObjectId],
 			ref: 'Artwork',
 			required: false,
 		},
 	],
 	reportedComments: [
 		{
-			type: mongoose.Types.ObjectId,
+			type: [mongoose.Types.ObjectId],
 			ref: 'Comment',
 			required: false,
 		},
