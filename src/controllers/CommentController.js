@@ -97,9 +97,38 @@ const deleteComment = asyncHandler(async (req, res) => {
 	});
 });
 
+// @desc    report comment
+// @route   POST comments/report/:id
+// @access  Private
+const reportComment = asyncHandler(async (req, res) => {
+	const comment = await Comment.findById(req.params.id);
+
+	if (!comment) {
+		return res.status(404).json({ error: 'Comment not found' });
+	}
+
+	// turn the reported property of the comment to true
+	comment.report = true;
+
+	// update change
+	await comment.save();
+
+	// check the login user
+	const user = await User.findById(req.userAuthId);
+
+	// save the artwork id to the reportedArtworks array of the user
+	if (!user.reportedComments.includes(comment._id)) {
+		user.reportedComments.push(comment._id);
+		await user.save();
+	}
+
+	res.status(200).json({ status: 'success', message: 'Comment reported successfully', comment });
+});
+
 module.exports = {
 	getAllComments,
 	createComment,
 	updateComment,
 	deleteComment,
+	reportComment,
 };

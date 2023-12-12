@@ -15,6 +15,10 @@ const CommentSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	report: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const Comment = mongoose.model('Comment', CommentSchema);
