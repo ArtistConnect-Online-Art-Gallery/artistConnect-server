@@ -4,6 +4,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRouter');
 const artworkRoutes = require('./routes/artworkRouter');
 const commentRoutes = require('./routes/commentRouter');
+const adminRoutes = require('./routes/adminRouter');
 
 // make a server instance
 app.use(express.json());
@@ -30,6 +31,7 @@ app.get('/', (request, response) => {
 app.use('/users', userRoutes);
 app.use('/artworks', artworkRoutes);
 app.use('/comments', commentRoutes);
+app.use('/admin', adminRoutes);
 
 module.exports = {
 	app,

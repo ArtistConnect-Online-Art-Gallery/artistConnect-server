@@ -1,55 +1,97 @@
 const asyncHandler = require('express-async-handler');
 
 const User = require('../models/UserModel');
+const Artwork = require('../models/ArtworkModel');
+const Comment = require('../models/CommentModel');
 
 // @desc    get all reported items
-// @route   GET reportedItems/
+// @route   GET admin/reportedArtworks
 // @access  Admin
+const getAllReportedArtworks = asyncHandler(async (req, res) => {
+	try {
+		// Find all users who have reported artworks
+		const usersWithReportedArtworks = await User.find({
+			reportedArtworks: { $exists: true, $not: { $size: 0 } },
+		}).populate('reportedArtworks');
 
-const getAllReportedItems = {
-	getAllReportedItems: async (req, res) => {
-		try {
-			// found all users with reported itmes
-			const usersWithReports = await User.find({
-				$or: [
-					{ reportedArtworks: { $exists: true, $not: { $size: 0 } } },
-					{ reportedComments: { $exists: true, $not: { $size: 0 } } },
-				],
-			})
-				.populate('reportedArtworks')
-				.populate('reportedComments');
+		// Aggregate reported artworks from different users
+		const reportedArtworks = [];
+		usersWithReportedArtworks.forEach((user) => {
+			reportedArtworks.push(...user.reportedArtworks);
+		});
 
-			// create arrays to store all reported artworks and comments
-			const reportedArtworks = [];
-			const reportedComments = [];
+		res.status(200).json({ status: 'success', reportedArtworks });
+	} catch (error) {
+		res.status(500).json({ error: 'Server Error' });
+	}
+});
 
-			usersWithReports.forEach((user) => {
-				if (user.reportedArtworks.length > 0) {
-					reportedArtworks.push(...user.reportedArtworks);
-				}
-				if (user.reportedComments.length > 0) {
-					reportedComments.push(...user.reportedComments);
-				}
-			});
+// @desc    get all reported comments
+// @route   GET admin/reportedComments
+// @access  Admin
+const getAllReportedComments = asyncHandler(async (req, res) => {
+	try {
+		// Find all users who have reported artworks
+		const usersWithReportedComments = await User.find({
+			reportedComments: { $exists: true, $not: { $size: 0 } },
+		}).populate('reportedComments');
 
-			// 返回所有举报的艺术品和评论给管理员
-			res.status(200).json({
-				reportedArtworks,
-				reportedComments,
-			});
-		} catch (err) {
-			res.status(500).json({ error: err.message });
+		// Aggregate reported artworks from different users
+		const reportedComments = [];
+		usersWithReportedComments.forEach((user) => {
+			reportedComments.push(...user.reportedComments);
+		});
+
+		res.status(200).json({ status: 'success', reportedComments });
+	} catch (error) {
+		res.status(500).json({ error: 'Server Error' });
+	}
+});
+
+// @desc    delete reported artworks by id
+// @route   DELETE admin/reportedArtworks/id
+// @access  Admin
+const deleteReportedArtworkById = asyncHandler(async (req, res) => {
+	try {
+		const artworkIdToDelete = req.params.id;
+
+		// delete the artwork
+		const deletedArtwork = await Artwork.findByIdAndDelete(artworkIdToDelete);
+
+		if (!deletedArtwork) {
+			return res.status(404).json({ error: 'Artwork not found' });
 		}
-	},
-};
 
-// @desc    delete comment
-// @route   POST comments/:id
+		res.status(200).json({ status: 'success', message: 'Artwork deleted successfully' });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Server Error' });
+	}
+});
+
+// @desc    delete reported comments by id
+// @route   DELETE admin/reportedComments/id
 // @access  Admin
+const deleteReportedCommentById = asyncHandler(async (req, res) => {
+	try {
+		const commentIdToDelete = req.params.id;
+
+		// delete the comment
+		const deletedComment = await Comment.findByIdAndDelete(commentIdToDelete);
+
+		if (!deletedComment) {
+			return res.status(404).json({ error: 'Comment not found' });
+		}
+
+		res.status(200).json({ status: 'success', message: 'Comment deleted successfully' });
+	} catch (error) {
+		res.status(500).json({ error: 'Server Error' });
+	}
+});
 
 module.exports = {
-	getAllComments,
-	createComment,
-	updateComment,
-	deleteComment,
+	getAllReportedArtworks,
+	getAllReportedComments,
+	deleteReportedArtworkById,
+	deleteReportedCommentById,
 };
