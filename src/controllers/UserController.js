@@ -108,7 +108,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 // @route   PATCH users/profiel/:id
 // @access  public
 const getUserProfileById = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.params.id);
+	const user = await User.findById(req.params.id)
 	if (!user) {
 		return res.status(404).json({ error: 'User not found' });
 	}

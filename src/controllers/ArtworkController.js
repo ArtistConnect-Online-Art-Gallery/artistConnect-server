@@ -6,7 +6,11 @@ const User = require('../models/UserModel');
 // @route   GET artworks/
 // @access  Public
 const getAllArtworks = asyncHandler(async (req, res) => {
-	const artworks = await Artwork.find();
+	const artworks = await Artwork.find().populate({
+		path: 'user',
+		select: 'username',
+	});
+
 	res.status(200).json({
 		status: 'success',
 		message: 'All artworks',
@@ -21,7 +25,7 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 	const { title, description, genre, medium, comments, artworkImg } = req.body;
 
 	// Find the logged-in user
-	const user = await User.findById(req.userAuthId);
+	const user = await User.findById(req.userAuthId).pupulate('user, username');
 
 	if (!user) {
 		return res.status(404).json({ error: 'Invalid user token' });
