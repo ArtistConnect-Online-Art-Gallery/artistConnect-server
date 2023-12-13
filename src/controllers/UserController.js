@@ -2,6 +2,7 @@ const User = require('../models/UserModel');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
+const hashedPassword = require('../utils/hashPassword');
 
 // @desc    Register user
 // @route   POST users/register
@@ -14,14 +15,15 @@ const registerUser = asyncHandler(async (req, res) => {
 		//throw
 		throw new Error('User already exists');
 	}
-	//hash password
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(password, salt);
+
+	// Hash the password
+	const hashedPwd = await hashedPassword(password);
+
 	//create the user
 	const user = await User.create({
 		username,
 		email,
-		password: hashedPassword,
+		password: hashedPwd,
 		isAdmin,
 	});
 	res.status(201).json({
@@ -56,32 +58,51 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET users/profile
 // @access  Private/Admin
 const getUserProfile = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.userAuthId).populate('artworks').populate('comments');
+	try {
+		const user = await User.findById(req?.userAuthId).populate('artworks').populate('comments');
 
-	res.json({
-		status: 'success',
-		message: 'User profile fetched successfully',
-		user,
-	});
+		res.json({
+			status: 'success',
+			message: 'User profile fetched successfully',
+			user,
+		});
+	} catch {
+		throw new Error('You do not have access to this profile');
+	}
 });
 
 // @desc    Update user details
 // @route   PATCH users/settings
 // @access  Private
-const updateUserDetails = async (req, res) => {
+const updateUserDetails = asyncHandler(async (req, res) => {
 	try {
-		const user = await User.findByIdAndUpdate(req.userAuthId, req.body, { new: true });
-		//send response
+		const { username, email, password, isAdmin, bio, userAvatarImg } = req.body;
+		const hashedPwd = await hashedPassword(password);
+
+		const user = await User.findByIdAndUpdate(
+			req.userAuthId,
+			{
+				username,
+				email,
+				password: hashedPwd, // Use the hashed password
+				isAdmin,
+				bio,
+				userAvatarImg,
+			},
+			{ new: true, runValidators: true } // 选项对象放置在正确的位置
+		);
+
 		res.json({
 			status: 'success',
 			message: 'User details updated successfully',
 			user,
+			token: generateToken(user?._id),
 		});
+		await user.save();
 	} catch (error) {
-		// Handle errors
 		res.status(500).json({ message: 'Error updating user details' });
 	}
-};
+});
 
 // @desc    delete user
 // @route   DELETE /users/settings/delete

@@ -36,7 +36,7 @@ const getAllReportedComments = asyncHandler(async (req, res) => {
 			reportedComments: { $exists: true, $not: { $size: 0 } },
 		}).populate('reportedComments');
 
-		// Aggregate reported artworks from different users
+		// Aggregate reported comments from different users
 		const reportedComments = [];
 		usersWithReportedComments.forEach((user) => {
 			reportedComments.push(...user.reportedComments);
