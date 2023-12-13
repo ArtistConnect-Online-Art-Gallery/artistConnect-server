@@ -25,7 +25,7 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 	const { title, description, genre, medium, comments, artworkImg } = req.body;
 
 	// Find the logged-in user
-	const user = await User.findById(req.userAuthId).pupulate('user, username');
+	const user = await User.findById(req.userAuthId);
 
 	if (!user) {
 		return res.status(404).json({ error: 'Invalid user token' });
@@ -85,7 +85,7 @@ const updateArtwork = asyncHandler(async (req, res) => {
 });
 
 // @desc    delete artwork
-// @route   Delete artworks/:id
+// @route   Delete artworks/:id/delete
 // @access  Private
 const deleteArtwork = asyncHandler(async (req, res) => {
 	artwork = await Artwork.findByIdAndDelete(req.params.id);

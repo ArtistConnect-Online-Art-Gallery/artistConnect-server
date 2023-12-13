@@ -18,6 +18,6 @@ artworkRoutes
 	.post('/report/:id', checkLoggedIn, reportArtwork)
 	.post('/favorite/:id', checkLoggedIn, favoriteArtwork)
 	.patch('/updateArtwork/:id', checkLoggedIn, checkArtworkCreator, updateArtwork)
-	.delete('/:id', checkLoggedIn, checkArtworkCreator, deleteArtwork);
+	.delete('/:id/delete', checkLoggedIn, checkArtworkCreator, deleteArtwork);
 
 module.exports = artworkRoutes;
