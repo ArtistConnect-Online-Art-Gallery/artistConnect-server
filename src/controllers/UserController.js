@@ -89,7 +89,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 				bio,
 				userAvatarImg,
 			},
-			{ new: true, runValidators: true } // 选项对象放置在正确的位置
+			{ new: true, runValidators: true }
 		);
 
 		res.json({
@@ -102,6 +102,18 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ message: 'Error updating user details' });
 	}
+});
+
+// @desc    fetch user profile by id
+// @route   PATCH users/profiel/:id
+// @access  public
+const getUserProfileById = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.params.id);
+	if (!user) {
+		return res.status(404).json({ error: 'User not found' });
+	}
+
+	res.status(200).json({ status: 'success', user });
 });
 
 // @desc    delete user
@@ -121,6 +133,7 @@ module.exports = {
 	registerUser,
 	loginUser,
 	getUserProfile,
+	getUserProfileById,
 	updateUserDetails,
 	deleteUser,
 };
