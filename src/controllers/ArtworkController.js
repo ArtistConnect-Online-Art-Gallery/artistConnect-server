@@ -30,12 +30,14 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 
 	//artwork name  exists
 	const artworkExist = await Artwork.findOne({ title });
+
 	if (artworkExist) {
 		throw new Error('Artwork Already Exists');
 	}
 	const artwork = await Artwork.create({
 		title,
 		user: req.userAuthId,
+		// username: user.username,
 		artworkImg,
 		description,
 		genre,
@@ -63,6 +65,7 @@ const updateArtwork = asyncHandler(async (req, res) => {
 		{
 			title,
 			user: req.userAuthId,
+			// username: user.username,
 			artworkImg,
 			description,
 			genre,

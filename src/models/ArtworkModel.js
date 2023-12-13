@@ -35,7 +35,6 @@ const ArtworkSchema = new mongoose.Schema(
 				'Other',
 			],
 		},
-
 		medium: {
 			type: String,
 			required: true,
