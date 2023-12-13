@@ -61,6 +61,8 @@ const deleteReportedArtworkById = asyncHandler(async (req, res) => {
 		if (!deletedArtwork) {
 			return res.status(404).json({ error: 'Artwork not found' });
 		}
+		// Update users who had this artwork
+		await User.updateMany({ artworks: artworkIdToDelete }, { $pull: { artworks: artworkIdToDelete } });
 
 		res.status(200).json({ status: 'success', message: 'Artwork deleted successfully' });
 	} catch (error) {
@@ -75,6 +77,9 @@ const deleteReportedArtworkById = asyncHandler(async (req, res) => {
 const deleteReportedCommentById = asyncHandler(async (req, res) => {
 	try {
 		const commentIdToDelete = req.params.id;
+
+		// delete the comment from all users' reportedComments arrays
+		await User.updateMany({ reportedComments: commentIdToDelete }, { $pull: { reportedComments: commentIdToDelete } });
 
 		// delete the comment
 		const deletedComment = await Comment.findByIdAndDelete(commentIdToDelete);

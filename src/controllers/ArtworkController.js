@@ -6,10 +6,7 @@ const User = require('../models/UserModel');
 // @route   GET artworks/
 // @access  Public
 const getAllArtworks = asyncHandler(async (req, res) => {
-	const artworks = await Artwork.find().populate({
-		path: 'user',
-		select: 'username',
-	});
+	const artworks = await Artwork.find().populate('user', 'username');
 
 	res.status(200).json({
 		status: 'success',
@@ -19,13 +16,13 @@ const getAllArtworks = asyncHandler(async (req, res) => {
 });
 
 // @desc    create new artworks
-// @route   POST artworks/uploadArtwork
+// @route   POST artworks/upload
 // @access  Private
 const uploadArtwork = asyncHandler(async (req, res) => {
 	const { title, description, genre, medium, comments, artworkImg } = req.body;
 
 	// Find the logged-in user
-	const user = await User.findById(req.userAuthId);
+	const user = await User.findById(req.userAuthId).populate('username');
 
 	if (!user) {
 		return res.status(404).json({ error: 'Invalid user token' });
@@ -57,7 +54,7 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 });
 
 // @desc    update artwork
-// @route   PATCH artworks/updateArtwork/:id
+// @route   PATCH artworks/：id/update
 // @access  Private
 const updateArtwork = asyncHandler(async (req, res) => {
 	const { title, description, genre, medium, comments, artworkImg } = req.body;
@@ -88,11 +85,26 @@ const updateArtwork = asyncHandler(async (req, res) => {
 // @route   Delete artworks/:id/delete
 // @access  Private
 const deleteArtwork = asyncHandler(async (req, res) => {
-	artwork = await Artwork.findByIdAndDelete(req.params.id);
+	// Delete the artwork
+	const deletedArtwork = await Artwork.findByIdAndDelete(req.params.id);
+
+	if (!deletedArtwork) {
+		return res.status(404).json({ status: 'error', message: 'Artwork not found' });
+	}
+
+	// Find the user associated with the deleted artwork
+	const user = await User.findById(req.userAuthId);
+
+	if (user) {
+		// Remove the deleted artwork ID from the user's artworks array
+		user.artworks.pull(deletedArtwork._id);
+		await user.save();
+	}
+
 	res.json({
 		status: 'success',
 		message: 'Artwork deleted successfully',
-		artwork,
+		artwork: deletedArtwork,
 	});
 });
 
@@ -100,7 +112,10 @@ const deleteArtwork = asyncHandler(async (req, res) => {
 // @route   POST artworks/report/:id
 // @access  Private
 const reportArtwork = asyncHandler(async (req, res) => {
-	const artwork = await Artwork.findById(req.params.id);
+	const artwork = await Artwork.findById(req.params.id).populate({
+		path: 'user',
+		select: 'username',
+	});
 
 	if (!artwork) {
 		return res.status(404).json({ error: 'Artwork not found' });
@@ -125,7 +140,7 @@ const reportArtwork = asyncHandler(async (req, res) => {
 });
 
 // @desc    Favorite artwork
-// @route   POST artworks/favorite/:id
+// @route   POST artworks/:id/favorite
 // @access  Private
 const favoriteArtwork = asyncHandler(async (req, res) => {
 	const artwork = await Artwork.findById(req.params.id);

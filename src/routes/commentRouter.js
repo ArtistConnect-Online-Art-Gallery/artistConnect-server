@@ -14,8 +14,8 @@ const commentRoutes = express.Router();
 commentRoutes
 	.get('/', getAllComments)
 	.post('/:artworkID', checkLoggedIn, createComment) //any logged-in user can create a comment
-	.post('/report/:id', checkLoggedIn, reportComment) //any logged-in user can report a comment
-	.patch('/:id', checkLoggedIn, checkCommentCreator, updateComment) //only the creator of the comment can update it
-	.delete('/:id', checkLoggedIn, checkCommentCreator, deleteComment); //only the creator of the comment can delete it
+	.post('/:id/report', checkLoggedIn, reportComment) //any logged-in user can report a comment
+	.patch('/:id/update', checkLoggedIn, checkCommentCreator, updateComment) //only the creator of the comment can update it
+	.delete('/:id/delete', checkLoggedIn, checkCommentCreator, deleteComment); //only the creator of the comment can delete it
 
 module.exports = commentRoutes;

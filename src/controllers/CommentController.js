@@ -7,7 +7,7 @@ const User = require('../models/UserModel');
 // @route   GET comments/
 // @access  Public
 const getAllComments = asyncHandler(async (req, res) => {
-	const comments = await Comment.find();
+	const comments = await Comment.find().populate('user', 'username');
 	res.status(200).json({
 		status: 'success',
 		message: 'All comments',
@@ -25,7 +25,7 @@ const createComment = asyncHandler(async (req, res) => {
 	// Find the artwork
 	const { artworkID } = req.params;
 
-	const artworkFound = await Artwork.findById(artworkID).populate('comments').populate('user');
+	const artworkFound = await Artwork.findById(artworkID);
 
 	if (!artworkFound) {
 		throw new Error('Artwork Not Found');
@@ -49,6 +49,10 @@ const createComment = asyncHandler(async (req, res) => {
 		artwork: artworkFound?._id,
 	});
 
+	const populatedComment = await Comment.findById(comment._id)
+		.populate('user', 'username')
+		.populate('artwork', 'title');
+
 	// Push the comment ID into the artwork's comments array
 	artworkFound.comments.push(comment._id);
 
@@ -59,20 +63,24 @@ const createComment = asyncHandler(async (req, res) => {
 	await artworkFound.save();
 	await user.save();
 
+	// Populate artwork, user, and display comment content
+
 	res.status(201).json({
 		status: 'success',
 		message: 'Comment created successfully',
-		comment,
+		comment: populatedComment,
 	});
 });
 //@desc    update comment
-// @route   PATCH comments/:id
+// @route   PATCH comments/:id/update
 // @access  Private
 const updateComment = asyncHandler(async (req, res) => {
 	const updateComment = await Comment.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
-	});
+	})
+		.populate('user', 'username')
+		.populate('artwork', 'title');
 
 	if (!updateComment) {
 		throw new Error('Comment not found');
@@ -86,7 +94,7 @@ const updateComment = asyncHandler(async (req, res) => {
 });
 
 // @desc    delete comment
-// @route   POST comments/:id
+// @route   POST comments/:id/delete
 // @access  Private
 const deleteComment = asyncHandler(async (req, res) => {
 	const comment = await Comment.findByIdAndDelete(req.params.id);

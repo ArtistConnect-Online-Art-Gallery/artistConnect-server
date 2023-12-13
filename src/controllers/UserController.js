@@ -39,15 +39,15 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 	//Find the user in db by email only
-	const userFound = await User.findOne({
+	const user = await User.findOne({
 		email,
 	});
-	if (userFound && (await bcrypt.compare(password, userFound?.password))) {
+	if (user && (await bcrypt.compare(password, user?.password))) {
 		res.json({
 			status: 'success',
 			message: 'User logged in successfully',
-			userFound,
-			token: generateToken(userFound?._id),
+			user,
+			token: generateToken(user?._id),
 		});
 	} else {
 		throw new Error('Invalid login credentials');
@@ -75,40 +75,36 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PATCH users/settings
 // @access  Private
 const updateUserDetails = asyncHandler(async (req, res) => {
-	try {
-		const { username, email, password, isAdmin, bio, userAvatarImg } = req.body;
-		const hashedPwd = await hashedPassword(password);
+	const { username, email, password, bio, userAvatarImg } = req.body;
+	const hashedPwd = await hashedPassword(password);
 
-		const user = await User.findByIdAndUpdate(
-			req.userAuthId,
-			{
-				username,
-				email,
-				password: hashedPwd, // Use the hashed password
-				isAdmin,
-				bio,
-				userAvatarImg,
-			},
-			{ new: true, runValidators: true }
-		);
+	const user = await User.findByIdAndUpdate(
+		req.userAuthId,
+		{
+			username,
+			email,
+			password: hashedPwd, // Use the hashed password
+			bio,
+			userAvatarImg,
+		},
+		{ new: true, runValidators: true }
+	);
 
-		res.json({
-			status: 'success',
-			message: 'User details updated successfully',
-			user,
-			token: generateToken(user?._id),
-		});
-		await user.save();
-	} catch (error) {
-		res.status(500).json({ message: 'Error updating user details' });
-	}
+	//send response
+	res.json({
+		status: 'success',
+		message: 'User details updated successfully',
+		user,
+		token: generateToken(user?._id),
+	});
+	await user.save();
 });
 
 // @desc    fetch user profile by id
-// @route   PATCH users/profiel/:id
+// @route   PATCH users/:id/profile
 // @access  public
 const getUserProfileById = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.params.id)
+	const user = await User.findById(req.params.id);
 	if (!user) {
 		return res.status(404).json({ error: 'User not found' });
 	}

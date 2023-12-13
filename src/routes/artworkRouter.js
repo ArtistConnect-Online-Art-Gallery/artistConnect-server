@@ -14,10 +14,10 @@ const artworkRoutes = express.Router();
 
 artworkRoutes
 	.get('/', getAllArtworks)
-	.post('/uploadArtwork', checkLoggedIn, uploadArtwork)
-	.post('/report/:id', checkLoggedIn, reportArtwork)
-	.post('/favorite/:id', checkLoggedIn, favoriteArtwork)
-	.patch('/updateArtwork/:id', checkLoggedIn, checkArtworkCreator, updateArtwork)
+	.post('/upload', checkLoggedIn, uploadArtwork)
+	.post('/:id/report', checkLoggedIn, reportArtwork)
+	.post('/:id/favorite', checkLoggedIn, favoriteArtwork)
+	.patch('/:id/update', checkLoggedIn, checkArtworkCreator, updateArtwork)
 	.delete('/:id/delete', checkLoggedIn, checkArtworkCreator, deleteArtwork);
 
 module.exports = artworkRoutes;
