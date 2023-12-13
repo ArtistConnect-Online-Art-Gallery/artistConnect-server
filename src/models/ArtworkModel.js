@@ -6,6 +6,12 @@ const ArtworkSchema = new mongoose.Schema({
 		ref: 'User',
 		required: true,
 	},
+
+	// username: {
+	// 	type: String,
+	// 	required: true,
+	// },
+
 	artworkImg: {
 		type: String, // URL of uploaded photo
 		required: true,

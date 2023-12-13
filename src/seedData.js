@@ -20,7 +20,7 @@ databaseConnect().then(async () => {
 
 	let newArtwork = await Artwork.create({
 		user: newUser._id,
-		username: newUser.username,
+		// username: newUser.username,
 		uploadedPhoto: 'http://google.com',
 		title: 'Awesome title',
 		description: 'artwork description',
