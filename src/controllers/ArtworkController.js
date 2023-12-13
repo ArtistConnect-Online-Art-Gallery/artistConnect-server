@@ -65,7 +65,6 @@ const updateArtwork = asyncHandler(async (req, res) => {
 		{
 			title,
 			user: req.userAuthId,
-			// username: user.username,
 			artworkImg,
 			description,
 			genre,
@@ -89,6 +88,7 @@ const updateArtwork = asyncHandler(async (req, res) => {
 // @access  Private
 const deleteArtwork = asyncHandler(async (req, res) => {
 	// Delete the artwork
+
 	const deletedArtwork = await Artwork.findByIdAndDelete(req.params.id);
 
 	if (!deletedArtwork) {
@@ -109,6 +109,8 @@ const deleteArtwork = asyncHandler(async (req, res) => {
 		message: 'Artwork deleted successfully',
 		artwork: deletedArtwork,
 	});
+
+	await user.save();
 });
 
 // @desc    report artwork

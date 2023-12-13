@@ -98,6 +98,12 @@ const updateComment = asyncHandler(async (req, res) => {
 // @access  Private
 const deleteComment = asyncHandler(async (req, res) => {
 	const comment = await Comment.findByIdAndDelete(req.params.id);
+	const user = await User.findById(req.userAuthId);
+	if (user) {
+		// Remove the deleted artwork ID from the user's artworks array
+		user.comments.pull(comment._id);
+		await user.save();
+	}
 	res.json({
 		status: 'success',
 		message: 'Comment deleted successfully',
