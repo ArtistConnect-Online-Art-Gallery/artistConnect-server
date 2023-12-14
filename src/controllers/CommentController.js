@@ -104,6 +104,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 		user.comments.pull(comment._id);
 		await user.save();
 	}
+
 	res.json({
 		status: 'success',
 		message: 'Comment deleted successfully',

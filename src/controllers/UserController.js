@@ -59,7 +59,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getUserProfile = asyncHandler(async (req, res) => {
 	try {
-		const user = await User.findById(req?.userAuthId).populate('artworks').populate('comments');
+		const user = await User.findById(req?.userAuthId);
 
 		res.json({
 			status: 'success',
