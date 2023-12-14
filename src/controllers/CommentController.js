@@ -113,7 +113,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 });
 
 // @desc    report comment
-// @route   POST comments/report/:id
+// @route   POST comments/:id/report
 // @access  Private
 const reportComment = asyncHandler(async (req, res) => {
 	const comment = await Comment.findById(req.params.id);

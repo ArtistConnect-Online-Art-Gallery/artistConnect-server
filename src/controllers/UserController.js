@@ -101,7 +101,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 });
 
 // @desc    fetch user profile by id
-// @route   PATCH users/:id/profile
+// @route   GET users/:id/profile
 // @access  public
 const getUserProfileById = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id);
