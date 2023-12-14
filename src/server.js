@@ -11,7 +11,7 @@ app.use(express.json());
 
 const corsOptions = {
 	//			frontend localhost,  frontend deployed
-	origin: ['http://localhost:3000/', 'http://localhost:3002', 'https://someDeployedWebsite.com'],
+	origin: ['http://localhost:3000/', 'http://localhost:3001', 'https://someDeployedWebsite.com'],
 	optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
