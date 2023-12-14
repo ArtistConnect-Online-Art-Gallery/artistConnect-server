@@ -1,31 +1,42 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 const { databaseConnect } = require('./database');
-const { Artwork } = require('./models/ArtworkModel');
-const { User } = require('./models/UserModel');
-const { Comment } = require('./models/CommentModel');
+const Artwork = require('./models/ArtworkModel');
+const User = require('./models/UserModel');
+const Comment = require('./models/CommentModel');
 
 databaseConnect().then(async () => {
 	console.log('Creating seed data!');
 
-	let newUser = new User({
-		username: 'user12',
-		email: 'user12@email.com',
-		password: 'user12pw',
-		bio: "This is user12's bio :)",
+	let user1 = new User({
+		username: 'user1',
+		email: 'user1@email.com',
+		password: 'user1pw',
+		bio: "This is user1's bio :)",
 	});
-	await newUser.save().then(() => {
-		console.log(`${newUser.username} is in the DB`);
+	await user1.save().then(() => {
+		console.log(`${user1.username} is in the DB`);
+	});
+
+	let admin = new User({
+		username: 'admin',
+		email: 'admin@email.com',
+		password: 'adminpw',
+		bio: "This is admin's bio :)",
+		isAdmin: true,
+	});
+	await admin.save().then(() => {
+		console.log(`${admin.username} is in the DB`);
 	});
 
 	let newArtwork = await Artwork.create({
-		user: newUser._id,
-		// username: newUser.username,
-		uploadedPhoto: 'http://google.com',
+		user: user1._id, // 使用 user1 的 _id 属性
+		artworkImg: 'http://google.com',
 		title: 'Awesome title',
 		description: 'artwork description',
-		genre: 'impressionism',
-		medium: 'painting',
+		genre: 'Modern',
+		medium: 'Oil Painting',
 	});
 	await newArtwork.save().then(() => {
 		console.log(`${newArtwork.title} is in the DB`);
@@ -33,12 +44,13 @@ databaseConnect().then(async () => {
 
 	let newComment = await Comment.create({
 		artwork: newArtwork._id,
-		username: newUser.username,
-		comment: 'This is a comment',
+		user: user1._id,
+		content: 'This is a comment',
 	});
 	await newComment.save().then(() => {
-		console.log(`comment: ${newComment.comment} is in the DB`);
+		console.log(`comment: ${newComment.content} is in the DB`);
 	});
 
-	console.log(newComment);
+	console.log('DataBase disconnected');
+	mongoose.disconnect();
 });

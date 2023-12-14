@@ -7,7 +7,8 @@
 		"test": "jest",
 		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
-		"seed": "node src/data.js"
+		"seed": "node src/seedData.js",
+		"drop": "node src/dropData.js"
 	},
 	"keywords": [],
 	"author": "",
