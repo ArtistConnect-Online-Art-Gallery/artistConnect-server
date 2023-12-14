@@ -114,7 +114,7 @@ const deleteArtwork = asyncHandler(async (req, res) => {
 });
 
 // @desc    report artwork
-// @route   POST artworks/report/:id
+// @route   POST artworks/:id/report
 // @access  Private
 const reportArtwork = asyncHandler(async (req, res) => {
 	const artwork = await Artwork.findById(req.params.id).populate({
