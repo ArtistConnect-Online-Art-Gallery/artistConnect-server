@@ -9,12 +9,7 @@ const adminRoutes = require('./routes/adminRouter');
 // make a server instance
 app.use(express.json());
 
-const corsOptions = {
-	//			frontend localhost,  frontend deployed
-	origin: ['http://localhost:3000/', 'http://localhost:3001', 'https://someDeployedWebsite.com'],
-	optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 // pass incoming request to express.json()
 app.use(express.json());
