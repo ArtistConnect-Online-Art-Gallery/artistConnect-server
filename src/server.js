@@ -4,6 +4,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRouter');
 const artworkRoutes = require('./routes/artworkRouter');
 const commentRoutes = require('./routes/commentRouter');
+const { globalErrorHandler, notFound } = require('../src/middlewares/globalErrorHandler');
 const adminRoutes = require('./routes/adminRouter');
 
 // make a server instance
@@ -27,6 +28,10 @@ app.use('/users', userRoutes);
 app.use('/artworks', artworkRoutes);
 app.use('/comments', commentRoutes);
 app.use('/admin', adminRoutes);
+
+// apply error handlers
+app.use(globalErrorHandler);
+app.use(notFound);
 
 module.exports = {
 	app,
