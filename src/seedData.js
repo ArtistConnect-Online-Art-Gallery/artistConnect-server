@@ -5,6 +5,7 @@ const { databaseConnect } = require('./database');
 const Artwork = require('./models/ArtworkModel');
 const User = require('./models/UserModel');
 const Comment = require('./models/CommentModel');
+const hashedPassword = require('./utils/hashPassword');
 
 databaseConnect().then(async () => {
 	console.log('Creating seed data!');
@@ -12,7 +13,7 @@ databaseConnect().then(async () => {
 	let user1 = new User({
 		username: 'user1',
 		email: 'user1@email.com',
-		password: 'user1pw',
+		password: await hashedPassword('user1pw'),
 		bio: "This is user1's bio :)",
 	});
 	await user1.save().then(() => {
@@ -22,7 +23,7 @@ databaseConnect().then(async () => {
 	let admin = new User({
 		username: 'admin',
 		email: 'admin@email.com',
-		password: 'adminpw',
+		password: await hashedPassword('adminpw'),
 		bio: "This is admin's bio :)",
 		isAdmin: true,
 	});
