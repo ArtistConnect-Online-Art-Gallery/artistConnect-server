@@ -2,6 +2,7 @@ const express = require('express');
 const {
 	uploadArtwork,
 	getAllArtworks,
+	getArtworkById,
 	updateArtwork,
 	deleteArtwork,
 	reportArtwork,
@@ -14,6 +15,7 @@ const artworkRoutes = express.Router();
 
 artworkRoutes
 	.get('/', getAllArtworks)
+	.get('/:id', getArtworkById)
 	.post('/upload', checkLoggedIn, uploadArtwork)
 	.post('/:id/report', checkLoggedIn, reportArtwork)
 	.post('/:id/favorite', checkLoggedIn, favoriteArtwork)
