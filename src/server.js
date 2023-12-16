@@ -10,7 +10,13 @@ const adminRoutes = require('./routes/adminRouter');
 // make a server instance
 app.use(express.json());
 
-app.use(cors());
+// allow cors
+const corsOptions = {
+	//			frontend localhost,  frontend deployed
+	origin: ['http://localhost:3000/', 'http://localhost:3002', 'https://artist-connect-app-a5e604cdf8ee.herokuapp.com/'],
+	optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 // pass incoming request to express.json()
 app.use(express.json());
