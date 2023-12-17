@@ -76,7 +76,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access  Private
 const updateUserDetails = asyncHandler(async (req, res) => {
 	const { username, email, password, bio, userAvatarImg } = req.body;
-	// Hash the password
+
 	//hash password
 	const salt = await bcrypt.genSalt(10);
 	const hashedPassword = await bcrypt.hash(password, salt);
