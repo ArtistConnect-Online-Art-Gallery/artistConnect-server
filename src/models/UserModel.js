@@ -41,6 +41,7 @@ const UserSchema = new mongoose.Schema({
 		required: false,
 		unique: false,
 		trim: true,
+		default: 'Write something about yourself',
 	},
 	userAvatarImg: {
 		type: String,
