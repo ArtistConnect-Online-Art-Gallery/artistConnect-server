@@ -15,14 +15,15 @@ const registerUser = asyncHandler(async (req, res) => {
 		throw new Error('User already exists');
 	}
 
-	// Hash the password
-	const hashedPwd = await hashedPassword(password);
+	//hash password
+	const salt = await bcrypt.genSalt(10);
+	const hashedPassword = await bcrypt.hash(password, salt);
 
 	//create the user
 	const user = await User.create({
 		username,
 		email,
-		password: hashedPwd,
+		password: hashedPassword,
 		isAdmin,
 	});
 	res.status(201).json({
@@ -76,13 +77,15 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const updateUserDetails = asyncHandler(async (req, res) => {
 	const { username, email, password, bio, userAvatarImg } = req.body;
 	// Hash the password
-	const hashedPwd = await hashedPassword(password);
+	//hash password
+	const salt = await bcrypt.genSalt(10);
+	const hashedPassword = await bcrypt.hash(password, salt);
 	const user = await User.findByIdAndUpdate(
 		req.userAuthId,
 		{
 			username,
 			email,
-			password: hashedPwd, // Use the hashed password
+			password: hashedPassword, // Use the hashed password
 			bio,
 			userAvatarImg,
 		},
