@@ -16,7 +16,7 @@ userRoutes
 	.post('/login', loginUser)
 	.get('/profile', checkLoggedIn, getUserProfile) // Access for logged-in users and only account owner can access the profile
 	.get('/:id/profile', getUserProfileById) // Access for any users to access user profile by id
-	.patch('/settings', checkLoggedIn, updateUserDetails) //Access for logged-in users and only account owner can access the setting page
+	.patch('/settings', checkLoggedIn, updateUserDetails, upload.array('files')) //Access for logged-in users and only account owner can access the setting page
 	.delete('/settings/delete', checkLoggedIn, deleteUser); //Access for logged-in users and only account owner can delete the account
 
 module.exports = userRoutes;
