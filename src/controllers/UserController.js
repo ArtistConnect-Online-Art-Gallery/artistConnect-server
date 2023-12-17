@@ -76,8 +76,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access  Private
 const updateUserDetails = asyncHandler(async (req, res) => {
 	const { username, email, password, bio, userAvatarImg } = req.body;
+	// Hash the password
 	const hashedPwd = await hashedPassword(password);
-
 	const user = await User.findByIdAndUpdate(
 		req.userAuthId,
 		{
