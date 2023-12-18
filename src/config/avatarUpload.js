@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
@@ -15,12 +18,11 @@ const storage = new CloudinaryStorage({
 	allowedFormats: ['jpg', 'png', 'jpeg'],
 	params: {
 		folder: 'artistconnect-avatars',
-		ß,
 	},
 });
 
 //init multer with storage engine
 //receive file that user is uploading
-const upload = multer({ storage });
+const avatarsUpload = multer({ storage });
 
-module.exports = upload;
+module.exports = avatarsUpload;

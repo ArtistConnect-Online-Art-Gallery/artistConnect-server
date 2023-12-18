@@ -75,11 +75,16 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PATCH users/settings
 // @access  Private
 const updateUserDetails = asyncHandler(async (req, res) => {
-	const { username, email, password, bio, userAvatarImg } = req.body;
+	const { username, email, password, bio } = req.body;
+	const userAvatarImg = req.file.path;
 
 	//hash password
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(password, salt);
+	let hashedPassword = password; // Initialize with the provided password
+	if (password) {
+		const salt = await bcrypt.genSalt(10);
+		hashedPassword = await bcrypt.hash(password, salt);
+	}
+
 	const user = await User.findByIdAndUpdate(
 		req.userAuthId,
 		{
