@@ -17,16 +17,22 @@ const getAllArtworks = asyncHandler(async (req, res) => {
 
 // @desc    Get a specific artwork by ID
 // @route   GET /artworks/:id
-// @access  Public
-const getArtworkById = asyncHandler(async (req, res) => {
-	const artwork = await Artwork.findById(req.params.id);
-  
-	res.status(200).json({
-	  status: 'success',
-	  message: 'Artwork found',
-	  artwork,
+// @access  Public 
+if (id.match(/^[0-9a-fA-F]{24}$/)) {
+    // Yes, it's a valid ObjectId, proceed with `findById` call. 
+	const getArtworkById = asyncHandler(async (req, res) => {
+		const artwork = await Artwork.findById(req.params.id);
+	
+		res.status(200).json({
+		status: 'success',
+		message: 'Artwork found',
+		artwork,
+		});
 	});
-  });
+} else{
+	console.log("Invalid ObjectId")
+}
+	
   
 
 // @desc    create new artworks
