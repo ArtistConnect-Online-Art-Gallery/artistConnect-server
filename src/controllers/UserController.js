@@ -75,9 +75,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PATCH users/settings
 // @access  Private
 const updateUserDetails = asyncHandler(async (req, res) => {
-	const { username, email, password, bio, userAvatarImg } = req.body;
-	const convertedImg = req.file.path;
-
+	const { username, email, password, bio } = req.body;
+	const convertedImg = req.files.map((file) => file?.path);
 	//hash password
 	let hashedPassword = password; // Initialize with the provided password
 	if (password) {
