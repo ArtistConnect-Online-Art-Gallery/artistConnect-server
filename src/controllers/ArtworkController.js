@@ -20,20 +20,19 @@ const getAllArtworks = asyncHandler(async (req, res) => {
 // @access  Public
 const getArtworkById = asyncHandler(async (req, res) => {
 	const artwork = await Artwork.findById(req.params.id);
-  
+
 	res.status(200).json({
-	  status: 'success',
-	  message: 'Artwork found',
-	  artwork,
+		status: 'success',
+		message: 'Artwork found',
+		artwork,
 	});
-  });
-  
+});
 
 // @desc    create new artworks
 // @route   POST artworks/upload
 // @access  Private
 const uploadArtwork = asyncHandler(async (req, res) => {
-	const { title, description, genre, medium, comments, artworkImg } = req.body;
+	const { title, description, genre, medium, comments } = req.body;
 
 	// Find the logged-in user
 	const user = await User.findById(req.userAuthId).populate('username');
@@ -52,7 +51,7 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 		title,
 		user: req.userAuthId,
 		// username: user.username,
-		artworkImg,
+		artworkImg: req.file.path,
 		description,
 		genre,
 		medium,
