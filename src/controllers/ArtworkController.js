@@ -17,7 +17,7 @@ const getAllArtworks = asyncHandler(async (req, res) => {
 
 // @desc    Get a specific artwork by ID
 // @route   GET /artworks/:id
-// @access  Public 
+// @access  Public
 
 const getArtworkById = asyncHandler(async (req, res) => {
 	const artwork = await Artwork.findById(req.params.id);
@@ -51,7 +51,6 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 	const artwork = await Artwork.create({
 		title,
 		user: req.userAuthId,
-		// username: user.username,
 		artworkImg: req.file.path,
 		description,
 		genre,

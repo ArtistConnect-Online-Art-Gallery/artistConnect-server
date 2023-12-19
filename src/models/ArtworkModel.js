@@ -7,12 +7,11 @@ const ArtworkSchema = new mongoose.Schema(
 			ref: 'User',
 			required: true,
 		},
-		artworkImg: [
-			{
-				type: String, // URL of uploaded photo
-				required: true,
-			},
-		],
+		artworkImg: {
+			type: String, // URL of uploaded photo
+			required: true,
+		},
+
 		title: {
 			type: String,
 			required: true,
