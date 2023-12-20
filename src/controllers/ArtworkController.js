@@ -50,7 +50,8 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 	}
 	const artwork = await Artwork.create({
 		title,
-		user: req.userAuthId,
+		user: req.userAuthId, 
+		username,
 		artworkImg: req.file.path,
 		description,
 		genre,
