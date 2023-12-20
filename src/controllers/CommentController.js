@@ -15,24 +15,21 @@ const getAllComments = asyncHandler(async (req, res) => {
 	});
 });
 
-
 // @desc    Get a specific comment by ID
 // @route   GET /comment/:id
 // @access  Public
 
 const getCommentById = asyncHandler(async (req, res) => {
 	const commentId = req.params.id;
-	
+
 	const comment = await Comment.findById(commentId);
 
-		res.status(200).json({
-			status: 'success',
-			message: 'Comment found',
-			comment,
-		});
+	res.status(200).json({
+		status: 'success',
+		message: 'Comment found',
+		comment,
+	});
 });
-
-  
 
 // @desc    create new comment
 // @route   POST comments/:artworkID
@@ -44,7 +41,7 @@ const createComment = asyncHandler(async (req, res) => {
 	// Find the artwork
 	const { artworkID } = req.params;
 
-	const artworkFound = await Artwork.findById(artworkID);
+	const artworkFound = await Artwork.findById(artworkID).populate('user');
 
 	if (!artworkFound) {
 		throw new Error('Artwork Not Found');
