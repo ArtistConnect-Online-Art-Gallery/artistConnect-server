@@ -5,7 +5,12 @@ const ArtworkSchema = new mongoose.Schema(
 		user: {
 			type: mongoose.Types.ObjectId,
 			ref: 'User',
-			required: true,
+			required: true, 
+			username: {
+				type: String, 
+				ref: 'User', 
+				required: true
+			}
 		},
 		artworkImg: {
 			type: String, // URL of uploaded photo
