@@ -20,7 +20,7 @@ const getAllArtworks = asyncHandler(async (req, res) => {
 // @access  Public
 
 const getArtworkById = asyncHandler(async (req, res) => {
-	const artwork = await Artwork.findById(req.params.id).populate('user');
+	const artwork = await Artwork.findById(req.params.id).populate('username');
 
 	res.status(200).json({
 		status: 'success',
@@ -50,7 +50,7 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 	}
 	const artwork = await Artwork.create({
 		title,
-		user: req.userAuthId, 
+		user: req.userAuthId,
 		username,
 		artworkImg: req.file.path,
 		description,
