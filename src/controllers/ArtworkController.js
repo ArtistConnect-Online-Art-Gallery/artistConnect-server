@@ -33,7 +33,7 @@ const getArtworkById = asyncHandler(async (req, res) => {
 // @route   POST artworks/upload
 // @access  Private
 const uploadArtwork = asyncHandler(async (req, res) => {
-	const { title, description, genre, medium, comments } = req.body;
+	const { title, description, genre, medium, comments, username } = req.body;
 
 	// Find the logged-in user
 	const user = await User.findById(req.userAuthId).populate('username');
