@@ -92,9 +92,7 @@ const updateComment = asyncHandler(async (req, res) => {
 	const updateComment = await Comment.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
-	})
-		.populate('user', 'username')
-		.populate('artwork', 'title');
+	}).populate('artwork', 'title');
 
 	if (!updateComment) {
 		throw new Error('Comment not found');
