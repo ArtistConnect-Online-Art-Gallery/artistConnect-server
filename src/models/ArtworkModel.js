@@ -2,13 +2,12 @@ const mongoose = require('mongoose');
 
 const ArtworkSchema = new mongoose.Schema(
 	{
-		user: [
-			{
-				type: mongoose.Types.ObjectId,
-				ref: 'User',
-				required: true,
-			},
-		],
+		user: {
+			type: mongoose.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		},
+
 		artworkImg: {
 			type: String, // URL of uploaded photo
 			required: true,
