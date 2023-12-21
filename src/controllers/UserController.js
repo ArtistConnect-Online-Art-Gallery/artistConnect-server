@@ -76,32 +76,35 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access  Private
 const updateUserDetails = asyncHandler(async (req, res) => {
 	const { username, email, password, bio } = req.body;
-	//hash password
+
+	// hash password
 	let hashedPassword = password; // Initialize with the provided password
 	if (password) {
 		const salt = await bcrypt.genSalt(10);
 		hashedPassword = await bcrypt.hash(password, salt);
 	}
 
-	const user = await User.findByIdAndUpdate(
-		req.userAuthId,
-		{
-			username,
-			email,
-			password: hashedPassword, // Use the hashed password
-			bio,
-			userAvatarImg: req.file.path,
-		},
-		{ new: true, runValidators: true }
-	);
+	const updateData = {
+		username,
+		email,
+		password: hashedPassword, // Use the hashed password
+		bio,
+	};
+	//only update avatar if there is a file
+	if (req.file) {
+		updateData.userAvatarImg = req.file.path;
+	}
 
-	//send response
+	const user = await User.findByIdAndUpdate(req.userAuthId, updateData, { new: true, runValidators: true });
+
+	// Send response
 	res.json({
 		status: 'success',
 		message: 'User details updated successfully',
 		user,
 		token: generateToken(user?._id),
 	});
+
 	await user.save();
 });
 
