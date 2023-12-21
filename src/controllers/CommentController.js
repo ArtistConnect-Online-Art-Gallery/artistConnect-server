@@ -7,7 +7,7 @@ const User = require('../models/UserModel');
 // @route   GET comments/
 // @access  Public
 const getAllComments = asyncHandler(async (req, res) => {
-	const comments = await Comment.find().populate('user', 'username');
+	const comments = await Comment.find().populate('user');
 	res.status(200).json({
 		status: 'success',
 		message: 'All comments',
@@ -22,7 +22,7 @@ const getAllComments = asyncHandler(async (req, res) => {
 const getCommentById = asyncHandler(async (req, res) => {
 	const commentId = req.params.id;
 
-	const comment = await Comment.findById(commentId);
+	const comment = await Comment.findById(commentId).populate('user');
 
 	res.status(200).json({
 		status: 'success',
