@@ -82,7 +82,7 @@ const createComment = asyncHandler(async (req, res) => {
 	res.status(201).json({
 		status: 'success',
 		message: 'Comment created successfully',
-		comment: populatedComment,
+		populatedComment,
 	});
 });
 //@desc    update comment
