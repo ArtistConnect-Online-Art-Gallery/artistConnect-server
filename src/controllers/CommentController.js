@@ -41,7 +41,7 @@ const createComment = asyncHandler(async (req, res) => {
 	// Find the artwork
 	const { artworkID } = req.params;
 
-	const artworkFound = await Artwork.findById(artworkID).populate('user', 'username');
+	const artworkFound = await Artwork.findById(artworkID).populate('comments');
 
 	if (!artworkFound) {
 		throw new Error('Artwork Not Found');
