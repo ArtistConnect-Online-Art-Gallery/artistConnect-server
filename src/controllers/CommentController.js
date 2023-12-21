@@ -7,7 +7,7 @@ const User = require('../models/UserModel');
 // @route   GET comments/
 // @access  Public
 const getAllComments = asyncHandler(async (req, res) => {
-	const comments = await Comment.find().populate('user');
+	const comments = await Comment.find().populate('user', 'username');
 	res.status(200).json({
 		status: 'success',
 		message: 'All comments',
