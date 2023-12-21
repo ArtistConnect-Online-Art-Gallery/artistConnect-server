@@ -55,7 +55,7 @@ const createComment = asyncHandler(async (req, res) => {
 
 	// Check if the user already commented on this artwork
 	const hasCommented = artworkFound?.comments?.find((comment) => comment?.user?.toString() === userId.toString());
-	if (hasComment) {
+	if (hasCommented) {
 		throw new Error('You have already commented on this artwork');
 	}
 
@@ -65,7 +65,7 @@ const createComment = asyncHandler(async (req, res) => {
 		artwork: artworkFound?._id,
 	});
 
-	const populatedComment = await Comment.findById(comment._id)
+	const populatedComment = await Comment.findById(comment?._id)
 		.populate('user', 'username')
 		.populate('artwork', 'title');
 
