@@ -26,7 +26,6 @@ const getArtworkById = asyncHandler(async (req, res) => {
 			path: 'comments',
 			populate: {
 				path: 'user',
-				select: 'username',
 			},
 		});
 
