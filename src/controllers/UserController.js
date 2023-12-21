@@ -76,7 +76,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access  Private
 const updateUserDetails = asyncHandler(async (req, res) => {
 	const { username, email, password, bio } = req.body;
-	const convertedImg = req.files.map((file) => file?.path);
 	//hash password
 	let hashedPassword = password; // Initialize with the provided password
 	if (password) {
@@ -91,7 +90,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 			email,
 			password: hashedPassword, // Use the hashed password
 			bio,
-			userAvatarImg: convertedImg,
+			userAvatarImg: req.file.path,
 		},
 		{ new: true, runValidators: true }
 	);
