@@ -36,7 +36,7 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 	const { title, description, genre, medium, comments, username } = req.body;
 
 	// Find the logged-in user
-	const user = await User.findById(req.userAuthId).populate('user');
+	const user = await User.findById(req.userAuthId).populate('username');
 
 	if (!user) {
 		return res.status(404).json({ error: 'Invalid user token' });
