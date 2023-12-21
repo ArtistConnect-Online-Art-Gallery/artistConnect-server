@@ -65,9 +65,7 @@ const createComment = asyncHandler(async (req, res) => {
 		artwork: artworkFound?._id,
 	});
 
-	const populatedComment = await Comment.findById(comment?._id)
-		.populate('user', 'username')
-		.populate('artwork', 'title');
+	const populatedComment = await Comment.findById(comment?._id);
 
 	// Push the comment ID into the artwork's comments array
 	artworkFound.comments.push(comment._id);
