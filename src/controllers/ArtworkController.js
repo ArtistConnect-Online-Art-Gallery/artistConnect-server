@@ -214,7 +214,8 @@ const unfavoriteArtwork = asyncHandler(async (req, res) => {
 	res.status(200).json({ status: 'success', message: 'Artwork unfavorited successfully', artwork });
 });
 
-module.exports = { 
+module.exports = {  
+	uploadArtwork,
 	getAllArtworks,
 	getArtworkById,
 	updateArtwork,
