@@ -171,50 +171,50 @@ const reportArtwork = asyncHandler(async (req, res) => {
 // @access  Private
 const favoriteArtwork = asyncHandler(async (req, res) => {
 	const artwork = await Artwork.findById(req.params.id);
-  
+
 	if (!artwork) {
-	  return res.status(404).json({ error: 'Artwork not found' });
+		return res.status(404).json({ error: 'Artwork not found' });
 	}
-  
+
 	artwork.favorite = true;
-	const user = await User.findById(req.userAuthId);
-  
+	const user = await User.findById(req.userAuthId).populate('artworks');
+
 	if (!user.favArtworks.includes(artwork._id)) {
-	  user.favArtworks.push(artwork._id);
-	  await user.save();
+		user.favArtworks.push(artwork._id);
+		await user.save();
 	}
-  
+
 	await artwork.save();
 	await user.save();
-  
+
 	res.status(200).json({ status: 'success', message: 'Artwork favorited successfully', artwork });
 });
-  
+
 // @desc    Unfavorite artwork
 // @route   DELETE artworks/:id/favorite
 // @access  Private
 const unfavoriteArtwork = asyncHandler(async (req, res) => {
 	const artwork = await Artwork.findById(req.params.id);
-  
+
 	if (!artwork) {
-	  return res.status(404).json({ error: 'Artwork not found' });
+		return res.status(404).json({ error: 'Artwork not found' });
 	}
 	artwork.favorite = false;
 	const user = await User.findById(req.userAuthId);
-  
+
 	const index = user.favArtworks.indexOf(artwork._id);
 	if (index !== -1) {
-	  user.favArtworks.splice(index, 1);
-	  await user.save();
+		user.favArtworks.splice(index, 1);
+		await user.save();
 	}
-  
+
 	await artwork.save();
 	await user.save();
-  
+
 	res.status(200).json({ status: 'success', message: 'Artwork unfavorited successfully', artwork });
 });
 
-module.exports = {  
+module.exports = {
 	uploadArtwork,
 	getAllArtworks,
 	getArtworkById,
@@ -222,6 +222,6 @@ module.exports = {
 	deleteArtwork,
 	reportArtwork,
 	favoriteArtwork,
-	favoriteArtwork, 
-	unfavoriteArtwork
+	favoriteArtwork,
+	unfavoriteArtwork,
 };
