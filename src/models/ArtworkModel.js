@@ -10,11 +10,11 @@ const ArtworkSchema = new mongoose.Schema(
 
 		artworkImg: {
 			type: String, // URL of uploaded photo
-			required: true,
+			required: [true, 'Please upload an image'],
 		},
 		title: {
 			type: String,
-			required: true,
+			required: [true, 'Please provide a title'],
 		},
 		description: {
 			type: String,
@@ -23,7 +23,7 @@ const ArtworkSchema = new mongoose.Schema(
 		},
 		genre: {
 			type: String,
-			required: true,
+			required: [true, 'Please select a genre'],
 			enum: [
 				'Modern',
 				'Impressionist',
@@ -38,7 +38,7 @@ const ArtworkSchema = new mongoose.Schema(
 		},
 		medium: {
 			type: String,
-			required: true,
+			required: [true, 'Please select a medium'],
 			enum: [
 				'Oil Painting',
 				'Acrylic Painting',
