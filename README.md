@@ -1,6 +1,7 @@
-# artistConnect-server 
+![logo](./Logo.png) 
+# artistConnect-server- Back-End  
 
-## Back-end for the artistConnect website
+## MERN application 
 
 
 Netlify URL :  
@@ -24,16 +25,30 @@ Ensure that the following tools and dependencies are installed if you want to us
 
 
 ## Server Libraries
+### Back End
 
-* `bcrypt`: A library for hashing passwords, commonly used for user authentication.
-* `bcryptjs`: Another library for password hashing, often used in conjunction with bcrypt.
-* `cloudinary`: A cloud service that provides image and video management. Useful for handling and storing media files.
-* `cors`: A middleware for Express.js that enables Cross-Origin Resource Sharing, allowing or restricting access to resources on your server from different domains.
-* `dotenv`: A zero-dependency module that loads environment variables from a .env file into process.env.
-* `express`: A popular web application framework for `Node.js`that simplifies the creation of APIs and web servers.
+* `bcrypt` is used for hashing our user's passwords, this library is commonly used for user authentication.
+* `bcryptjs` this library for password hashing as well, it is used in conjunction with bcrypt.
+* `cloudinary`is a cloud service that provides image management. Useful for handling and storing user's image avatars and artworks files.
+* `cors`is a middleware for Express.js that was used to manage and control access to resources on the server from different domains. It allows or restricts cross-origin HTTP requests, which is essential for security. 
+* `dotenv` Zero-dependency Node.js module that simplifies the process of loading environment variables, managing the configuration settings, API keys, database connection strings, and other sensitive information.
+* `express`is a web application framework for Node.js that helps to simplify the creation of APIs (routes for different HTTP methods) and web servers. 
+* `express-async-handler` handleS asynchronous errors in Express.js middleware and route handlers.
 
-* `express-async-handler`: A utility to handle asynchronous errors in `Express.js` middleware and route handlers.
+* `jsonwebtoken` creates and verifies JSON Web Tokens (JWT) used for secure communication between parties.
 
-* `jsonwebtoken`: A library for creating and verifying JSON Web Tokens (JWT) used for secure communication between parties.
+* `mongoose` is an Object Data Modeling (ODM) library for MongoDB and Node.js that helps to simplify interactions with MongoDB databases. It was used for the schemas definition and models creation, also CRUD operations middleware and more. 
 
-* `mongoose` : An Object Data Modeling (ODM) library for MongoDB and Node.js, simplifying interactions with MongoDB databases.
+### Front-End 
+
+* `axios` is the library used to make HTTP requests. 
+* `tailwindcss`  utility-first CSS framework, used to styled  the front end. 
+* `reduxjs Version 2.0.1/toolkit ` is an efficient tool to develop, simplify the process of managing state in React applications.
+*`jest-dom Version 5.17.0/testing-library` matchers for validating the state of the DOM in your tests
+
+*`user-event Version 13.5.0/testing-library`
+
+## Testing 
+___
+
+

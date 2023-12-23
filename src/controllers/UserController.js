@@ -59,7 +59,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getUserProfile = asyncHandler(async (req, res) => {
 	try {
-		const user = await User.findById(req?.userAuthId).populate('artworks').populate('comments');
+		const user = await User.findById(req?.userAuthId).populate('artworks').populate('comments').populate('favArtworks');
 
 		res.json({
 			status: 'success',
@@ -112,7 +112,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 // @route   GET users/:id/profile
 // @access  public
 const getUserProfileById = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.params.id);
+	const user = await User.findById(req.params.id).populate('artworks').populate('comments');
 	if (!user) {
 		return res.status(404).json({ error: 'User not found' });
 	}
