@@ -87,9 +87,13 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 	const updateData = {
 		username,
 		email,
-		password: hashedPassword, // Use the hashed password
 		bio,
 	};
+	//only update password if there is a password
+	if (password) {
+		const salt = await bcrypt.genSalt(10);
+		updateData.password = await bcrypt.hash(password, salt);
+	}
 	//only update avatar if there is a file
 	if (req.file) {
 		updateData.userAvatarImg = req.file.path;
