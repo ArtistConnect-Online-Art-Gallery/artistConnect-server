@@ -6,7 +6,8 @@ const {
 	updateArtwork,
 	deleteArtwork,
 	reportArtwork,
-	favoriteArtwork,
+	favoriteArtwork, 
+	unfavoriteArtwork
 } = require('../controllers/ArtworkController');
 
 const checkLoggedIn = require('../middlewares/checkLoggedIn');
@@ -19,7 +20,8 @@ artworkRoutes
 	.get('/:id', getArtworkById)
 	.post('/upload', checkLoggedIn, artworksUpload.single('file'), uploadArtwork)
 	.post('/:id/report', checkLoggedIn, reportArtwork)
-	.post('/:id/favorite', checkLoggedIn, favoriteArtwork)
+	.post('/:id/favorite', checkLoggedIn, favoriteArtwork) 
+	.delete('/:id/favorite', checkLoggedIn, unfavoriteArtwork)
 	.patch('/:id/update', checkLoggedIn, checkArtworkCreator, updateArtwork)
 	.delete('/:id/delete', checkLoggedIn, checkArtworkCreator, deleteArtwork);
 
