@@ -185,12 +185,7 @@ const favoriteArtwork = asyncHandler(async (req, res) => {
 	}
 
 	await artwork.save();
-	await user
-		.populate({
-			path: 'favArtworks',
-			select: 'title description artworkImg user genre medium',
-		})
-		.execPopulate();
+	await user.populate('artworks');
 	res.status(200).json({ status: 'success', message: 'Artwork favorited successfully', artwork });
 });
 
