@@ -47,25 +47,25 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.userAuthId).populate('username');
 
 	if (!user) {
-		return res.status(404).json({ error: 'Invalid user token' });
+		return res.status(404).json({ message: 'Invalid user token' });
 	}
 
 	// Check if artwork file is uploaded
 	if (!req.file) {
-		return res.status(400).json({ error: 'No artwork file uploaded' });
+		return res.status(400).json({ message: 'No artwork file uploaded' });
 	}
 
 	// Check if genre is selected
 	if (!genre) {
-		return res.status(400).json({ error: 'Genre is required' });
+		return res.status(400).json({ message: 'Genre is required' });
 	}
 
 	if (!medium) {
-		return res.status(400).json({ error: 'Genre is required' });
+		return res.status(400).json({ message: 'Genre is required' });
 	}
 
 	if (!description) {
-		return res.status(400).json({ error: 'Genre is required' });
+		return res.status(400).json({ message: 'Genre is required' });
 	}
 
 	//artwork name  exists
