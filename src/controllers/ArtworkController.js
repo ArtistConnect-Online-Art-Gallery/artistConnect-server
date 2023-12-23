@@ -187,7 +187,7 @@ const favoriteArtwork = asyncHandler(async (req, res) => {
 	await user.populate('favArtworks');
 	await artwork.save();
 
-	res.status(200).json({ status: 'success', message: 'Artwork favorited successfully', artwork });
+	res.status(200).json({ status: 'success', message: 'Artwork favorited successfully', artwork, user });
 });
 
 // @desc    Unfavorite artwork
