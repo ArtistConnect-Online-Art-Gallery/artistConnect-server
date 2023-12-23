@@ -99,7 +99,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 		updateData.userAvatarImg = req.file.path;
 	}
 
-	const user = await User.findByIdAndUpdate(req.userAuthId, updateData, { new: true, runValidators: true });
+	const user = await User.findByIdAndUpdate(req.userAuthId, updateData, { new: true });
 
 	// Send response
 	res.json({
