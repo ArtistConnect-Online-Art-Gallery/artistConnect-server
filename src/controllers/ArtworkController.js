@@ -177,7 +177,10 @@ const favoriteArtwork = asyncHandler(async (req, res) => {
 	}
 
 	artwork.favorite = true;
-	const user = await User.findById(req.userAuthId);
+	const user = await User.findById(req.userAuthId).populate({
+		path: 'favArtworks',
+		select: 'title description artworkImg user genre medium',
+	});
 
 	if (!user.favArtworks.includes(artwork._id)) {
 		user.favArtworks.push(artwork);
