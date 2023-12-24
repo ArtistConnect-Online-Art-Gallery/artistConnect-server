@@ -32,7 +32,7 @@ databaseConnect().then(async () => {
 	});
 
 	let newArtwork = await Artwork.create({
-		user: user1._id, // 使用 user1 的 _id 属性
+		user: user1._id,
 		artworkImg: 'http://google.com',
 		title: 'Awesome title',
 		description: 'artwork description',
