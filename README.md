@@ -1,5 +1,5 @@
 ![logo](./Logo.png) 
-# artistConnect-server- Back-End  
+# artistConnect-server/Back-End  
 
 Netlify URL : https://artist-connect.netlify.app/ 
 
