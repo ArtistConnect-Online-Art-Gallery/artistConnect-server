@@ -55,17 +55,20 @@ const uploadArtwork = asyncHandler(async (req, res) => {
 		return res.status(400).json({ message: 'No artwork file uploaded' });
 	}
 
+	if (!title) {
+		return res.status(400).json({ message: 'Title is required' });
+	}
 	// Check if genre is selected
 	if (!genre) {
 		return res.status(400).json({ message: 'Genre is required' });
 	}
 
 	if (!medium) {
-		return res.status(400).json({ message: 'medium is required' });
+		return res.status(400).json({ message: 'Medium is required' });
 	}
 
 	if (!description) {
-		return res.status(400).json({ message: 'description is required' });
+		return res.status(400).json({ message: 'Description is required' });
 	}
 
 	//artwork name  exists
